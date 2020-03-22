@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { LoginMenu } from './api-authorization/LoginMenu';
+import authService from '../components/api-authorization/AuthorizeService';
 import './NavMenu.css';
 
 export class NavMenu extends Component {
@@ -12,17 +13,30 @@ export class NavMenu extends Component {
 
     this.toggleNavbar = this.toggleNavbar.bind(this);
     this.state = {
-      collapsed: true
+        collapsed: true,
+        isAuthenticated: false
     };
-  }
+    }
+
+    componentDidMount() {
+        this.populateState();
+    }
 
   toggleNavbar () {
     this.setState({
       collapsed: !this.state.collapsed
     });
-  }
+    }
 
-  render () {
+    async populateState() {
+        const [isAuthenticated, user] = await Promise.all([authService.isAuthenticated(), authService.getUser()])
+        this.setState({
+            isAuthenticated,
+            userName: user && user.name
+        });
+    }
+
+    render() {
     return (
       <header>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
@@ -34,12 +48,9 @@ export class NavMenu extends Component {
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
                 </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/counter">Counter</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
-                </NavItem>
+                {this.state.isAuthenticated ? <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/dailytasks">Daily Tasks</NavLink>
+                </NavItem> : null}
                 <LoginMenu>
                 </LoginMenu>
               </ul>

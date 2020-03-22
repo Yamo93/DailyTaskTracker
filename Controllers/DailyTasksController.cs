@@ -34,7 +34,18 @@ namespace DailyTaskTracker.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DailyTask>>> GetTask()
         {
-            return await _context.Task.ToListAsync();
+            var tasksToBeAccessed = new List<DailyTask>();
+            var dailyTasks = await _context.Task.ToListAsync();
+            foreach (var dailyTask in dailyTasks)
+            {
+                var authorizationResult = await _authorizationService.AuthorizeAsync(User, dailyTask, Operations.Read);
+
+                if (authorizationResult.Succeeded)
+                {
+                    tasksToBeAccessed.Add(dailyTask);
+                }
+            }
+            return tasksToBeAccessed;
         }
 
         // GET: api/DailyTasks/5
@@ -54,7 +65,8 @@ namespace DailyTaskTracker.Controllers
             if (authorizationResult.Succeeded)
             {
                 return dailyTask;
-            } else
+            }
+            else
             {
                 return new ForbidResult();
             }
@@ -73,25 +85,35 @@ namespace DailyTaskTracker.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(dailyTask).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!DailyTaskExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, dailyTask, Operations.Update);
 
-            return NoContent();
+            if (authorizationResult.Succeeded)
+            {
+                _context.Entry(dailyTask).State = EntityState.Modified;
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!DailyTaskExists(id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                return NoContent();
+            }
+            else
+            {
+                return new ForbidResult();
+            }
         }
 
         // POST: api/DailyTasks
@@ -102,6 +124,11 @@ namespace DailyTaskTracker.Controllers
         public async Task<ActionResult<DailyTask>> PostDailyTask(DailyTask dailyTask)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); // will give the user's userId
+
+            if (userId == null)
+            {
+                return new ForbidResult();
+            }
 
             dailyTask.UserId = userId;
 
@@ -123,10 +150,20 @@ namespace DailyTaskTracker.Controllers
                 return NotFound();
             }
 
-            _context.Task.Remove(dailyTask);
-            await _context.SaveChangesAsync();
 
-            return dailyTask;
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, dailyTask, Operations.Delete);
+
+            if (authorizationResult.Succeeded)
+            {
+                _context.Task.Remove(dailyTask);
+                await _context.SaveChangesAsync();
+
+                return dailyTask;
+            }
+            else
+            {
+                return new ForbidResult();
+            }
         }
 
         private bool DailyTaskExists(int id)

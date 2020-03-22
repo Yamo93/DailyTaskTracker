@@ -11,6 +11,8 @@ using DailyTaskTracker.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using DailyTaskTracker.Authorization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DailyTaskTracker
 {
@@ -41,6 +43,8 @@ namespace DailyTaskTracker
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddScoped<IAuthorizationHandler, TaskAuthorizationHandler>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

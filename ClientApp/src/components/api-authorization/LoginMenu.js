@@ -18,7 +18,7 @@ export class LoginMenu extends Component {
         this._subscription = authService.subscribe(() => this.populateState());
         this.populateState();
     }
-
+    
     componentWillUnmount() {
         authService.unsubscribe(this._subscription);
     }
