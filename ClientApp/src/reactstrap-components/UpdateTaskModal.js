@@ -31,6 +31,11 @@ const UpdateTaskModal = (props) => {
     const toggle = () => setModal(!modal);
 
     const updatePost = () => {
+        // Form validation
+        if (!description || !date || !time) {
+            return;
+        }
+
         authService.getAccessToken()
             .then(token => {
                 const postToBeUpdated = {
@@ -93,7 +98,16 @@ const UpdateTaskModal = (props) => {
                     <Form>
                         <FormGroup>
                             <Label for="description">Description</Label>
-                            <Input type="text" name="description" id="description" placeholder="Task description" onChange={e => setDescription(e.target.value)} value={description} />
+                            <Input
+                                type="text"
+                                name="description"
+                                id="description"
+                                placeholder="Task description"
+                                onChange={e => setDescription(e.target.value)}
+                                value={description}
+                                valid={!!description}
+                                invalid={!description}
+                            />
                         </FormGroup>
                         <FormGroup>
                             <Label for="date">Date</Label>
@@ -104,6 +118,8 @@ const UpdateTaskModal = (props) => {
                                 placeholder="Date"
                                 value={date}
                                 onChange={e => setDate(moment(e.target.value).format('YYYY-MM-DD'))}
+                                valid={!!date}
+                                invalid={!date}
                             />
                         </FormGroup>
                         <FormGroup>
@@ -115,6 +131,8 @@ const UpdateTaskModal = (props) => {
                                 placeholder="Time spent"
                                 defaultValue={time} 
                                 onChange={e => setTime(parseInt(e.target.value))}
+                                valid={!!time}
+                                invalid={!time}
                             />
                         </FormGroup>
                         <FormGroup>

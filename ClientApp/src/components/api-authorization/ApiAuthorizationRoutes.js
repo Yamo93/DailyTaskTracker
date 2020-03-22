@@ -7,7 +7,7 @@ import { ApplicationPaths, LoginActions, LogoutActions } from './ApiAuthorizatio
 export default class ApiAuthorizationRoutes extends Component {
 
   render () {
-    return(
+    return (
       <Fragment>
           <Route path={ApplicationPaths.Login} render={() => loginAction(LoginActions.Login)} />
           <Route path={ApplicationPaths.LoginFailed} render={() => loginAction(LoginActions.LoginFailed)} />
@@ -21,7 +21,7 @@ export default class ApiAuthorizationRoutes extends Component {
   }
 }
 
-function loginAction(name){
+function loginAction(name) {
     return (<Login action={name}></Login>);
 }
 

@@ -18,5 +18,6 @@ namespace DailyTaskTracker.Data
         {
         }
         public DbSet<DailyTaskTracker.Models.DailyTask> Task { get; set; }
+        public DbSet<DailyTaskTracker.Models.ReleaseNews> News { get; set; }
     }
 }

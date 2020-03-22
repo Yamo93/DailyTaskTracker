@@ -35,18 +35,6 @@ const AddTaskModal = (props) => {
 
     const addPost = async () => {
         // Form validation
-        if (!description || description.length === 0) {
-            setIsDescriptionInvalid(true);
-        }
-
-        if (!date) {
-            setIsDateInvalid(true);
-        }
-
-        if (!time || time === 0) {
-            setIsTimeInvalid(true);
-        }
-
         if (!description || !date || !time) {
             return;
         }
