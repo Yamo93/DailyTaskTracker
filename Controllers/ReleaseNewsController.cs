@@ -52,7 +52,7 @@ namespace DailyTaskTracker.Controllers
         // PUT: api/ReleaseNews/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutReleaseNews(int id, ReleaseNews releaseNews)
         {
@@ -114,7 +114,7 @@ namespace DailyTaskTracker.Controllers
         }
 
         // DELETE: api/ReleaseNews/5
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<ReleaseNews>> DeleteReleaseNews(int id)
         {

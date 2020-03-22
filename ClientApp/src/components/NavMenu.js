@@ -52,7 +52,7 @@ export class NavMenu extends Component {
                   <NavLink tag={Link} className="text-white" to="/">Home</NavLink>
                 </NavItem>
                 {this.state.role && this.state.role.includes("Admin") ? <NavItem>
-                    <NavLink tag={Link} className="text-white" to="/">Admin</NavLink>
+                    <NavLink tag={Link} className="text-white" to="/admin">Admin</NavLink>
                 </NavItem> : null}
                 {this.state.isAuthenticated ? <NavItem>
                     <NavLink tag={Link} className="text-white" to="/dailytasks">Daily Tasks</NavLink>
