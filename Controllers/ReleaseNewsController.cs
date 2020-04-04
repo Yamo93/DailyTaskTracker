@@ -70,6 +70,7 @@ namespace DailyTaskTracker.Controllers
                 return Forbid();
             }
 
+            releaseNews.UpdatedDate = DateTime.Now;
             _context.Entry(releaseNews).State = EntityState.Modified;
 
             try
@@ -107,6 +108,7 @@ namespace DailyTaskTracker.Controllers
                 return Forbid();
             }
 
+            releaseNews.CreatedDate = DateTime.Now;
             _context.News.Add(releaseNews);
             await _context.SaveChangesAsync();
 

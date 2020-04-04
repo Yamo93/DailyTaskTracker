@@ -51,7 +51,7 @@ export default class RoleAuthorizeRoute extends Component {
         const [isAuthenticated, user] = await Promise.all([authService.isAuthenticated(), authService.getUser()]);
         this.setState({
             isAuthenticated,
-            isAuthorized: !!user.role,
+            isAuthorized: user && !!user.role,
             role: user && user.role
         });
     }

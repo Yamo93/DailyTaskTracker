@@ -12,7 +12,6 @@ const AddNewsModal = (props) => {
     } = props;
     const [modal, setModal] = useState(false);
     const [title, setTitle] = useState();
-    const [date, setDate] = useState(new Date());
     const [content, setContent] = useState();
     const [user, setUser] = useState();
 
@@ -29,14 +28,13 @@ const AddNewsModal = (props) => {
 
     const addNews = async () => {
         // Form validation
-        if (!title || !date || !content) {
+        if (!title || !content) {
             return;
         }
 
         const token = await authService.getAccessToken();
         const newsToBeAdded = {
             title,
-            createdDate: date,
             content,
             userId: user.sub
 
@@ -91,19 +89,6 @@ const AddNewsModal = (props) => {
                                 onChange={e => setTitle(e.target.value)}
                                 valid={!!title}
                                 invalid={!title}
-                            />
-                        </FormGroup>
-                        <FormGroup>
-                            <Label for="date">Date</Label>
-                            <Input
-                                type="date"
-                                name="date"
-                                id="date"
-                                placeholder="Date"
-                                defaultValue={moment(date).format('YYYY-MM-DD')}
-                                onChange={e => setDate(new Date(e.target.value))}
-                                valid={!!date}
-                                invalid={!date}
                             />
                         </FormGroup>
                         <FormGroup>

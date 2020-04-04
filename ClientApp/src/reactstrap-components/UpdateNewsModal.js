@@ -13,7 +13,7 @@ const UpdateNewsModal = (props) => {
     const [id, setId] = useState(props.newsToBeUpdated.id);
     const [modal, setModal] = useState(false);
     const [title, setTitle] = useState(props.newsToBeUpdated.title);
-    const [date, setDate] = useState(moment(props.newsToBeUpdated.createdDate).format('YYYY-MM-DD'));
+
     const [content, setContent] = useState(parseInt(props.newsToBeUpdated.content));
     const [user, setUser] = useState();
 
@@ -30,7 +30,7 @@ const UpdateNewsModal = (props) => {
 
     const updateNews = () => {
         // Form validation
-        if (!content || !date || !title) {
+        if (!content || !title) {
             return;
         }
 
@@ -38,7 +38,6 @@ const UpdateNewsModal = (props) => {
             .then(token => {
                 const newsToBeUpdated = {
                     id,
-                    createdDate: new Date(date),
                     title,
                     content,
                     userId: props.newsToBeUpdated.userId
@@ -103,19 +102,6 @@ const UpdateNewsModal = (props) => {
                                 value={title}
                                 valid={!!title}
                                 invalid={!title}
-                            />
-                        </FormGroup>
-                        <FormGroup>
-                            <Label for="date">Date</Label>
-                            <Input
-                                type="date"
-                                name="date"
-                                id="date"
-                                placeholder="Date"
-                                value={date}
-                                onChange={e => setDate(moment(e.target.value).format('YYYY-MM-DD'))}
-                                valid={!!date}
-                                invalid={!date}
                             />
                         </FormGroup>
                         <FormGroup>
