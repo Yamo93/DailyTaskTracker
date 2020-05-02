@@ -50,7 +50,6 @@ const AddNewsModal = (props) => {
             .then(res => {
                 // Clear inputs
                 setTitle();
-                setDate(new Date());
                 setContent();
 
                 // Close modal

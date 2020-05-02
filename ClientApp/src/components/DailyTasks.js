@@ -111,7 +111,15 @@ export class DailyTasks extends Component {
             </>
         );
 
-        const userName = this.state.user ? this.state.user.preferred_username : '...';
+        let userName = '';
+
+        if (this.state.user && this.state.user.preferred_username) {
+            userName = this.state.user.preferred_username;
+        } else if (this.state.user && this.state.user.name) {
+            userName = this.state.user.name;
+        } else {
+            userName = '...';
+        }
         const message = this.state.alertMessage ? <Alert color={this.state.alertMessage.color}>{this.state.alertMessage.text}</Alert> : this.state.alertMessage;
 
         return (
